@@ -82,6 +82,10 @@ return {
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
           map('gd', '<CMD>:Lspsaga goto_definition<CR>', '[G]oto [D]efinition')
+          --map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+
+          -- hover
+          map('K', '<CMD>:Lspsaga hover_doc ++keep<CR>', 'Hover Doc')
 
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -110,6 +114,10 @@ return {
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
           map('<leader>ca', '<CMD>:Lspsaga code_action<CR>', '[C]ode [A]ction', { 'n', 'x' })
+          -- map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
+
+          -- outline
+          map('<leader>co', '<CMD>:Lspsaga outline<CR>', '[C]ode [O]utline', { 'n', 'x' })
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -149,6 +157,8 @@ return {
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+            -- 默认开启inlay hints
+            vim.lsp.inlay_hint.enable(true)
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
@@ -191,6 +201,12 @@ return {
                 typeCheckingMode = 'standard',
               },
             },
+          },
+        },
+
+        ruff = {
+          settings = {
+            ruff = {},
           },
         },
         -- rust_analyzer = {},
